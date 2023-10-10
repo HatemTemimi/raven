@@ -18,8 +18,7 @@ Pull and run the docker image
     docker run --rm  hatemtemimi94/raven
 ```
 This is a shortlisted sample of what you should expect to receive:
-```json
-[
+```console
 	160.3.168.70:8080
 	81.103.105.130:8888
 	146.59.14.159:80
@@ -42,7 +41,6 @@ This is a shortlisted sample of what you should expect to receive:
 	41.128.148.78:1976
 	45.162.135.201:999
 	64.227.106.157:80
-]
 ```
 ### Flags
 -fetch: fetching method, set to "all" for all proxies, "valid" for validation against target
