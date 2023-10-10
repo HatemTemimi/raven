@@ -54,12 +54,12 @@ func (r *Raven) FetchValidToStdOut(target string) (error){
 }
 
 
-func (r *Raven) FetchAllToFile() (error){
+func (r *Raven) FetchAllToJsonFile(filePath string) (error){
   proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return err
   }
-  err = r.Writer.WriteToJsonFile(proxies)
+  err = r.Writer.WriteToJsonFile(proxies, filePath)
   if err != nil {
     return err
   }
@@ -67,13 +67,13 @@ func (r *Raven) FetchAllToFile() (error){
 }
 
 
-func (r *Raven) FetchValidToFile(target string) (error){
+func (r *Raven) FetchValidToJsonFile(target string, filePath string) (error){
   proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return err
   }
   workingAgainst := r.Checker.Check(proxies, []string{target})
-  err = r.Writer.WriteToJsonFile(workingAgainst)
+  err = r.Writer.WriteToJsonFile(workingAgainst,filePath)
   if err != nil {
     return err
   }
