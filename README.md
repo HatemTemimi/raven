@@ -8,13 +8,7 @@
 
 </ul>
 
-## Add Raven to your project
-### Requirements: Go, Git
 
-Install the package
-```console
-    go get github.com/HatemTemimi/Raven
- ```
 ## Proxies in one command with docker
 You can run the Raven as a container and it will print out the result proxies for you, it also comes with flags support to filter out the results.
 
@@ -78,6 +72,13 @@ Exporting to file is done via the flag -o
 ```
 
 ## Library usage for developement
+## Add Raven to your project
+### Requirements: Go, Git
+
+Install the package
+```console
+    go get github.com/HatemTemimi/Raven
+ ```
 
 Create  *Raven* instance and call the *Init* function to set it up
 ```go
