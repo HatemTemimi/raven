@@ -3,19 +3,19 @@ import "net/http"
 
 
 type Raven struct {
-    scan Scanner
-    check Checker
-    writer Writer
+    Scanner Scanner
+    Checker Checker
+    Writer Writer
 }
 
 func (r *Raven) Init(){
   client := http.Client{}
-  r.scan.client = &client
-  r.check.client = &client
+  r.Scanner.client = &client
+  r.Checker.client = &client
 }
 
 func (r *Raven) FetchAll() ([]string, error){
-  proxies, err := r.scan.ScanDefaultSources();
+  proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return nil, err
   }
@@ -24,21 +24,42 @@ func (r *Raven) FetchAll() ([]string, error){
 
 
 func (r *Raven) FetchValid(target string) ([]string, error){
-  proxies, err := r.scan.ScanDefaultSources();
+  proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return nil, err
   }
-  workingAgainst := r.check.Check(proxies, []string{target})
+  workingAgainst := r.Checker.Check(proxies, []string{target})
   return workingAgainst, nil
 }
 
 
-func (r *Raven) FetchAllToFile(target string) (error){
-  proxies, err := r.scan.ScanDefaultSources();
+func (r *Raven) FetchAllToStdOut() (error){
+  proxies, err := r.Scanner.ScanDefaultSources();
+  if (err !=nil){
+    return  err
+  }
+  r.Writer.WriteToStdout(proxies)
+  return nil
+}
+
+
+func (r *Raven) FetchValidToStdOut(target string) (error){
+  proxies, err := r.Scanner.ScanDefaultSources();
+  if (err !=nil){
+    return  err
+  }
+  workingAgainst := r.Checker.Check(proxies, []string{target})
+  r.Writer.WriteToStdout(workingAgainst)
+  return nil
+}
+
+
+func (r *Raven) FetchAllToFile() (error){
+  proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return err
   }
-  err = r.writer.WriteToJsonFile(proxies)
+  err = r.Writer.WriteToJsonFile(proxies)
   if err != nil {
     return err
   }
@@ -47,12 +68,12 @@ func (r *Raven) FetchAllToFile(target string) (error){
 
 
 func (r *Raven) FetchValidToFile(target string) (error){
-  proxies, err := r.scan.ScanDefaultSources();
+  proxies, err := r.Scanner.ScanDefaultSources();
   if (err !=nil){
     return err
   }
-  workingAgainst := r.check.Check(proxies, []string{target})
-  err = r.writer.WriteToJsonFile(workingAgainst)
+  workingAgainst := r.Checker.Check(proxies, []string{target})
+  err = r.Writer.WriteToJsonFile(workingAgainst)
   if err != nil {
     return err
   }

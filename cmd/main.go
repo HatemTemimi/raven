@@ -1,14 +1,11 @@
 package main
 
 import (
-	"log"
-	"raven/raven"
+	"github.com/HatemTemimi/Raven/raven"
 )
 
 func main() {
 	raven := raven.Raven{}
 	raven.Init()
-	proxies, _ := raven.FetchAll()
-	log.Println(proxies)
-
+  raven.FetchValidToStdOut("www.spankbang.com")
 }
