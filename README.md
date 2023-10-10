@@ -19,28 +19,28 @@ Pull and run the docker image
 ```
 This is a shortlisted sample of what you should expect to receive:
 ```console
-	160.3.168.70:8080
-	81.103.105.130:8888
-	146.59.14.159:80
-	45.70.236.194:999
-	103.155.54.38:83
-	203.57.51.53:80
-	47.254.198.237:3128
-	54.92.199.26:80
-	144.76.75.25:4444
-	186.155.230.114:999
-	190.61.32.168:6969
-	94.198.40.18:80
-	190.61.48.24:999
-	181.176.221.151:9812
-	193.151.130.114:8086
-	95.56.254.139:3128
-	213.6.170.17:80
-	69.94.136.71:8443
-	178.128.157.114:443
-	41.128.148.78:1976
-	45.162.135.201:999
-	64.227.106.157:80
+		160.3.168.70:8080
+		81.103.105.130:8888
+		146.59.14.159:80
+		45.70.236.194:999
+		103.155.54.38:83
+		203.57.51.53:80
+		47.254.198.237:3128
+		54.92.199.26:80
+		144.76.75.25:4444
+		186.155.230.114:999
+		190.61.32.168:6969
+		94.198.40.18:80
+		190.61.48.24:999
+		181.176.221.151:9812
+		193.151.130.114:8086
+		95.56.254.139:3128
+		213.6.170.17:80
+		69.94.136.71:8443
+		178.128.157.114:443
+		41.128.148.78:1976
+		45.162.135.201:999
+		64.227.106.157:80
 ```
 ### Flags
 -fetch: fetching method, set to "all" for all proxies, "valid" for validation against target
@@ -51,20 +51,20 @@ This is a shortlisted sample of what you should expect to receive:
 #### Fetching untested public proxies
 the fetch flag accepts these values: all | valid
 ```bash
-	  docker run --rm  hatemtemimi94/raven -fetch all 
+	docker run --rm  hatemtemimi94/raven -fetch all 
 	  #will return all public proxies
 ```
 #### Fetching tested public proxies against custom target url
 with the fetch flag set to "valid", we have to specify the target url to test on, using the -t flag
 ```bash
-	  docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com 
+	docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com 
 	  #will return all valid public proxies tested against the target url
 	  #replace it with your value for example www.google.com
 ```
 #### Exporting
 Exporting to file is done via the flag -o
 ```bash
-	  docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com -o proxies.json
+	docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com -o proxies.json
 	  #will return all valid public proxies tested against the target url
 ```
 
