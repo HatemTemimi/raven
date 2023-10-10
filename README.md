@@ -17,7 +17,7 @@ Pull and run the docker image
 ```bash
     docker run --rm  hatemtemimi94/raven
 ```
-This is sample of what you should expect to receive:
+This is a shortlisted sample of what you should expect to receive:
 ```json
 [
 	160.3.168.70:8080
@@ -42,7 +42,6 @@ This is sample of what you should expect to receive:
 	41.128.148.78:1976
 	45.162.135.201:999
 	64.227.106.157:80
-	...
 ]
 ```
 ### Flags
