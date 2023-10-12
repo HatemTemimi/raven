@@ -8,7 +8,6 @@
 
 </ul>
 
-
 ## Proxies in one command with docker
 You can run the Raven as a container and it will print out the result proxies for you, it also comes with flags support to filter out the results.
 
@@ -43,10 +42,11 @@ This is a shortlisted sample of what you should expect to receive:
 	64.227.106.157:80
 ```
 ### Flags
--fetch: fetching method, set to "all" for all proxies, "valid" for validation against target
--t [ target ]: target url against which the tests will be performed, **mandatory when using -fetch valid**
--o [output]: path to the file in which to write the results
--h [ help ]: prints help about the commands
+-f [ fetch ]: fetching method, set to "all" for all proxies, "valid" for validation against target <br /> 
+-t [ target ]: target url against which the tests will be performed, **mandatory when using -fetch valid**<br /> 
+-i [ input ]: path to the input file, to read the proxies from, should be json or txt<br /> 
+-o [ output ]: path to the file in which to write the results, could be json or txt<br /> 
+-h [ help ]: prints help about the commands<br /> 
 
 #### Fetching untested public proxies
 the fetch flag accepts these values: all | valid

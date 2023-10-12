@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-
 	raven "github.com/HatemTemimi/Raven/raven/cli"
 )
 
