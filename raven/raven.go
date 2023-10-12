@@ -1,7 +1,6 @@
 package raven
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -106,16 +105,60 @@ func (r *Raven) FetchValidToTxtFile(target string, filePath string) error {
 }
 
 
-func (r *Raven) CheckFromTxtFile(target string, filePath string) error {
+func (r *Raven) FetchFromTxtFile(target string, filePath string) ([]string, error) {
 	proxies, err := r.Reader.ReadTxtfile(filePath)
+	if err != nil {
+		return nil,err
+	}
+	return proxies, nil
+}
+
+
+
+func (r *Raven) FetchFromJsonFile(target string, filePath string) ([]string, error) {
+	proxies, err := r.Reader.ReadJsonFile(filePath)
+	if err != nil {
+		return nil,err
+	}
+	return proxies, nil
+}
+
+
+func (r *Raven) CheckFromJsonFile(target string, filePath string) ([]string, error) {
+	proxies, err := r.Reader.ReadJsonFile(filePath)
+	if err != nil {
+		return nil,err
+	}
+	workingAgainst := r.Checker.Check(proxies, []string{target})
+	return workingAgainst, nil
+}
+
+
+func (r *Raven) CheckFromTxtToTxt(url string, source string, target string) error {
+	proxies, err := r.Reader.ReadTxtfile(source)
 	if err != nil {
 		return err
 	}
-	workingAgainst := r.Checker.Check(proxies, []string{target})
-	log.Println(workingAgainst)
-	err = r.Writer.WriteToTxtFile(workingAgainst, filePath)
+	workingAgainst := r.Checker.Check(proxies, []string{url})
+	err = r.Writer.WriteToTxtFile(workingAgainst, target)
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
+
+func (r *Raven) CheckFromJsonToJson(url string, source string, target string) error {
+	proxies, err := r.Reader.ReadJsonFile(source)
+	if err != nil {
+		return err
+	}
+	workingAgainst := r.Checker.Check(proxies, []string{url})
+	err = r.Writer.WriteToJsonFile(workingAgainst, target)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+

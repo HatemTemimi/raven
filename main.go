@@ -9,16 +9,14 @@ import (
 func main() {
 	raven := raven.Raven{}
 	raven.Init()
-	err := raven.FetchAllToTxtFile("proxies.txt")
+	err := raven.FetchAllToJsonFile("proxies.json")
 	if err != nil {
 		log.Println(err)
 	}
-	err = raven.CheckFromTxtFile("www.google.com", "proxies.txt")
+	err = raven.CheckFromJsonToJson("www.spankbang.com","proxies.json", "valid.json")
 	if err != nil {
 		log.Println(err)
 	}
-
-
 
 	/*
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
