@@ -11,7 +11,7 @@ import (
 )
 
 type Checker struct {
-	client *http.Client
+	Client *http.Client
 }
 
 func (c *Checker) CheckAgainstTarget(proxy string, target string, data *[]string, wg *sync.WaitGroup) {
@@ -26,13 +26,13 @@ func (c *Checker) CheckAgainstTarget(proxy string, target string, data *[]string
 		ResponseHeaderTimeout: 30 * time.Second,
 	}
 
-	c.client.Transport = transport
+	c.Client.Transport = transport
 
 	httpsPoke, _ := http.NewRequest("GET", "https://"+target, nil)
 
 	httpsPoke.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36")
 
-	httpsResp, httpsErr := c.client.Do(httpsPoke)
+	httpsResp, httpsErr := c.Client.Do(httpsPoke)
 
 	if httpsErr != nil {
 		log.Println(proxy, "is Down against: ", target)

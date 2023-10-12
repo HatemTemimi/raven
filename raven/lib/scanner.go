@@ -6,7 +6,7 @@ import (
 )
 
 type Scanner struct {
-	client  *http.Client
+	Client  *http.Client
 	sources []string
 }
 
@@ -37,7 +37,7 @@ func (s *Scanner) ScanSource(url string) ([]string, error) {
 	var proxies []string
 
 	//get proxies from url: Proxy:PORT
-	resp, err := s.client.Get(url)
+	resp, err := s.Client.Get(url)
 	if err != nil {
 		return nil, err
 	}

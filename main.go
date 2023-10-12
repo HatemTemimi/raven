@@ -3,22 +3,24 @@ package main
 import (
 	"flag"
 	"log"
-	"path/filepath"
 
-	"github.com/HatemTemimi/Raven/raven"
+	raven "github.com/HatemTemimi/Raven/raven/cli"
 )
 
 func main() {
-	raven := raven.Raven{}
-	raven.Init()
+
+	cli := raven.Cli{}
+	cli.Init()
 
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
 	fetch := flag.String("f", "all", "Fetch types:\n 1/all: all proxies \n 2/valid: only valid proxies[you must provide a target with -t]")
 	output := flag.String("o", "", "Path to the output file, defaults to proxies.json")
-	input := flag.String("i", "", "Path to the input file")
+	input := flag.String("i", "", "Path to the input file, json or txt")
 	help := flag.String("h", "", "Raven help")
 
 	flag.Parse()
+
+	//without input, fetching from sources
 	if *input == "" {
 		if *fetch == "all" {
 		//fetching all without validation
@@ -29,93 +31,77 @@ func main() {
 				//without target
 				if *output == "" {
 					//without output
-					raven.FetchAllToStdOut()
+					cli.FetchAllToStdOut()
 				} else if *output != "" {
 					//with output
-					raven.FetchAllToJsonFile(*output)
+					cli.FetchAllToFile(*output)
 				}
 			}
 
 		} else if *fetch == "valid" {
 			if *target == "" {
+			log.Println("no custom target provided, testing against default target.")
 			//fetching valid without target, forwards to google.com
 				if *output == ""{
 				//without output, forwards to sdtdout
-					log.Println("no custom target provided, testing against default target.")
-					raven.FetchValidToStdOut("www.google.com")
+					cli.FetchValidToStdOut("www.google.com")
 				} else if *output != ""{
 				//with output
-					log.Println("no custom target provided, testing against default target.")
-					raven.FetchValidToJsonFile("www.google.com", *output)
+					cli.FetchValidToFile("www.google.com", *output)
 				}
 			} else if *target != "" {
 				//with target
 				if *output == ""{
 					//without output
-					raven.FetchValidToStdOut(*target)
+					cli.FetchValidToStdOut(*target)
 				} else if *output != "" {
 					//with output
-					raven.FetchValidToJsonFile(*target, *output)
+					cli.FetchValidToFile(*target, *output)
 				}
 			}
 		}
 
 	} else if *input != ""{
-		var extension =  filepath.Ext(*input)
 		if *fetch == "all" {
 		//fetching all without validation
 			if *target != "" {
-			//with target!!err 
+				//with target!!err 
 				log.Println("the -t (target flag) is used with fetch set to valid --> -fetch valid")
 			} else if *target == ""{
 				//without target
 				if *output == "" {
 					//without output
-					if  extension == ".txt" {
-						raven.FetchFromTxtFile(*input)
-					} else if  extension == ".json" {
-						raven.FetchFromJsonFile(*input)
-					} else {
-						log.Println("please provide txt or json files as input")
+					//FetchAllFromFile TO STDOUT
+					err := cli.FetchAllFromFileToStdOut(*input)
+					if err != nil {
+						log.Println(err)
 					}
+
 				} else if *output != "" {
 					//with output
-					if  extension == ".txt" {
-						log.Println("you are fetching all from file, the exported file will be same as the input, try -fetch valid -output proxies.txt to filter out the list")
-					} else if  extension == ".json" {
-						log.Println("you are fetching all from file, the exported file will be same as the input, try -fetch valid -output proxies.json to filter out the list")
-					} 
-					//with output
+					log.Println("Fetching same proxies from file to file, try the -fetch valid flag with a custom target.")
 				}
 			}
 
 		} else if *fetch == "valid" {
 			if *target == "" {
 			//fetching valid without target, forwards to google.com
+				log.Println("no custom target provided, testing against default target.")
 				if *output == ""{
-				//without output, forwards to sdtdout
-					if  extension == ".txt" {
-						//raven.CheckFromjj(*input)
-
-						//needs func fetchvalidfromtxt to stdout
-					} else if  extension == ".json" {
-						//needs func fetchvalidfromjson to stdout
-					} else {
-						log.Println("please provide txt or json files as input")
-					}
+					//without output, forwards to sdtdout
+					//neeeds FETCHVALIDfromfileTOSTDOUT
+					cli.FetchValidFromFileToStdOut("www.google.com", *input)
 				} else if *output != ""{
-				//with output
-					log.Println("no custom target provided, testing against default target.")
-					raven.FetchValidToJsonFile("www.google.com", *output)
+					cli.FetchValidFromFileToFile("www.google.com", *input, *output)
 				}
 			} else if *target != "" {
 				//with target
 				if *output == ""{
 					//without output
-					raven.FetchValidToStdOut(*target)
+					cli.FetchValidFromFileToStdOut(*target, *input)
 				} else if *output != "" {
 					//with output
-					raven.FetchValidToJsonFile(*target, *output)
+					cli.FetchValidFromFileToFile(*target,*input, *output)
 				}
 			}
 		}
