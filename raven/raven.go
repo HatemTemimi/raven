@@ -105,7 +105,7 @@ func (r *Raven) FetchValidToTxtFile(target string, filePath string) error {
 }
 
 
-func (r *Raven) FetchFromTxtFile(target string, filePath string) ([]string, error) {
+func (r *Raven) FetchFromTxtFile(filePath string) ([]string, error) {
 	proxies, err := r.Reader.ReadTxtfile(filePath)
 	if err != nil {
 		return nil,err
@@ -115,7 +115,7 @@ func (r *Raven) FetchFromTxtFile(target string, filePath string) ([]string, erro
 
 
 
-func (r *Raven) FetchFromJsonFile(target string, filePath string) ([]string, error) {
+func (r *Raven) FetchFromJsonFile(filePath string) ([]string, error) {
 	proxies, err := r.Reader.ReadJsonFile(filePath)
 	if err != nil {
 		return nil,err
