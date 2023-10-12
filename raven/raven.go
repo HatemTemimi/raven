@@ -1,11 +1,15 @@
 package raven
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
 
 type Raven struct {
 	Scanner Scanner
 	Checker Checker
 	Writer  Writer
+	Reader Reader
 }
 
 func (r *Raven) Init() {
@@ -94,6 +98,21 @@ func (r *Raven) FetchValidToTxtFile(target string, filePath string) error {
 		return err
 	}
 	workingAgainst := r.Checker.Check(proxies, []string{target})
+	err = r.Writer.WriteToTxtFile(workingAgainst, filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
+func (r *Raven) CheckFromTxtFile(target string, filePath string) error {
+	proxies, err := r.Reader.ReadTxtfile(filePath)
+	if err != nil {
+		return err
+	}
+	workingAgainst := r.Checker.Check(proxies, []string{target})
+	log.Println(workingAgainst)
 	err = r.Writer.WriteToTxtFile(workingAgainst, filePath)
 	if err != nil {
 		return err

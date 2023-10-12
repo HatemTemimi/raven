@@ -1,8 +1,7 @@
 package main
 
 import (
-	"flag"
-	"fmt"
+	"log"
 
 	"github.com/HatemTemimi/Raven/raven"
 )
@@ -10,7 +9,18 @@ import (
 func main() {
 	raven := raven.Raven{}
 	raven.Init()
+	err := raven.FetchAllToTxtFile("proxies.txt")
+	if err != nil {
+		log.Println(err)
+	}
+	err = raven.CheckFromTxtFile("www.google.com", "proxies.txt")
+	if err != nil {
+		log.Println(err)
+	}
 
+
+
+	/*
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
 	fetch := flag.String("f", "all", "Fetch type; 1/all all proxies 2/valid only valid proxies[you must provide a target with -t]")
 	output := flag.String("o", "", "Path to the file, defaults to proxies.json")
@@ -41,5 +51,6 @@ func main() {
 	} else if *fetch == "" || *help != "" {
 		flag.PrintDefaults()
 	}
+	*/
 
 }
