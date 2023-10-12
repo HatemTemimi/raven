@@ -74,3 +74,29 @@ func (r *Raven) FetchValidToJsonFile(target string, filePath string) error {
 	}
 	return nil
 }
+
+
+func (r *Raven) FetchAllToTxtFile(filePath string) error {
+	proxies, err := r.Scanner.ScanDefaultSources()
+	if err != nil {
+		return err
+	}
+	err = r.Writer.WriteToTxtFile(proxies, filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Raven) FetchValidToTxtFile(target string, filePath string) error {
+	proxies, err := r.Scanner.ScanDefaultSources()
+	if err != nil {
+		return err
+	}
+	workingAgainst := r.Checker.Check(proxies, []string{target})
+	err = r.Writer.WriteToTxtFile(workingAgainst, filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}

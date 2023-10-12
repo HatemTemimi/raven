@@ -32,7 +32,7 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 	defer f.Close()
 
 	for _, value := range proxies {
-		fmt.Fprintln(f, value)  // print values to f, one per line
+		fmt.Fprintln(f, value)  
 	}
 
 	return nil
