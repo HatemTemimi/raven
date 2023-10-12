@@ -6,28 +6,28 @@ import (
 )
 
 type Scanner struct {
-	client *http.Client
-  sources []string
+	client  *http.Client
+	sources []string
 }
 
 const (
 	TheSpeedX   = "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt"
 	ProxyScrape = "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=all&ssl=all&anonymity=all"
-  Clarketm = "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt"
+	Clarketm    = "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt"
 )
 
 func (s *Scanner) ScanDefaultSources() ([]string, error) {
 
 	var proxies []string
-  s.sources = []string{TheSpeedX, ProxyScrape, Clarketm}
+	s.sources = []string{TheSpeedX, ProxyScrape, Clarketm}
 
-  for _, source := range s.sources {
-      chunk, err := s.ScanSource(source)
-      if err != nil {
-        return nil, err
-      }
-      proxies = append(proxies, chunk...)
-  }
+	for _, source := range s.sources {
+		chunk, err := s.ScanSource(source)
+		if err != nil {
+			return nil, err
+		}
+		proxies = append(proxies, chunk...)
+	}
 
 	return proxies, nil
 }

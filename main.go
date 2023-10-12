@@ -12,9 +12,10 @@ func main() {
 	raven.Init()
 
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
-	fetch := flag.String("fetch", "all", "Fetch type; 1/all all proxies 2/valid only valid proxies[you must provide a target with -t]")
+	fetch := flag.String("f", "all", "Fetch type; 1/all all proxies 2/valid only valid proxies[you must provide a target with -t]")
 	output := flag.String("o", "", "Path to the file, defaults to proxies.json")
 	help := flag.String("h", "", "Raven help")
+
 	flag.Parse()
 
 	if *fetch == "all" {
