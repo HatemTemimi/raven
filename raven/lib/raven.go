@@ -2,6 +2,7 @@ package raven
 
 import (
 	"net/http"
+	"path/filepath"
 )
 
 type Raven struct {
@@ -51,6 +52,26 @@ func (r *Raven) FetchAllFromJsonFile(filePath string) ([]string, error) {
 }
 
 
+func (r *Raven) FetchAllFromFile(source string) ([]string,error) {
+	var sourceExt =  filepath.Ext(source)
+	if sourceExt == ".txt" {
+		proxies, err := r.FetchAllFromTxtFile(source)
+		if err != nil {
+			return nil, err
+		}
+		return proxies, nil
+		
+	} else if sourceExt == ".json" {
+		proxies,err := r.FetchAllFromJsonFile(source)
+		if err != nil {
+			return nil, err
+		}
+		return proxies, nil
+	}
+	return nil, nil
+}
+
+
 func (r *Raven) FetchValidFromJsonFile(target string, filePath string) ([]string, error) {
 	proxies, err := r.Reader.ReadJsonFile(filePath)
 	if err != nil {
@@ -71,5 +92,21 @@ func (r *Raven) FetchValidFromTxtFile(target string, filePath string) ([]string,
 }
 
 
-
-
+func (r *Raven) FetchValidFromFileToStdOut(url string, source string) ([]string, error) {
+	var sourceExt =  filepath.Ext(source)
+	if sourceExt == ".txt" {
+		proxies, err := r.FetchValidFromTxtFile(url,source)
+		if err != nil {
+			return nil, err
+		}
+		return proxies, nil
+		
+	} else if sourceExt == ".json" {
+		proxies,err := r.FetchValidFromJsonFile(url,source)
+		if err != nil {
+			return nil,err
+		}
+		return proxies, nil
+	}
+	return nil, nil
+}
