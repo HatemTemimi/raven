@@ -52,20 +52,28 @@ This is a shortlisted sample of what you should expect to receive:
 #### Fetching untested public proxies
 the fetch flag accepts these values: all | valid
 ```bash
-	docker run --rm  hatemtemimi94/raven -fetch all 
-	  #will return all public proxies
+	docker run --rm  hatemtemimi94/raven -f all 
+	#will return all public proxies
 ```
 #### Fetching tested public proxies against custom target url
 with the fetch flag set to "valid", we have to specify the target url to test on, using the -t flag
 ```bash
-	docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com 
-	  #will return all valid public proxies tested against the target url
-	  #replace it with your value for example www.google.com
+	docker run --rm  hatemtemimi94/raven -f valid -t www.example.com 
+	#will return all valid public proxies tested against the target url
+	#replace it with your value for example www.google.com
 ```
+
+#### Fetching from file and testing against custom target url
+with the fetch flag set to "valid", we have to specify the target url to test on, using the -t flag
+```bash
+	docker run --rm  hatemtemimi94/raven -f valid -i proxies.json -t www.example.com 
+	#will return all valid proxies tested against the target url
+```
+
 #### Exporting
 Exporting to file is done via the flag -o
 ```bash
-	docker run --rm  hatemtemimi94/raven -fetch valid -t www.example.com -o proxies.json
+	docker run --rm  hatemtemimi94/raven -f valid -t www.example.com -o proxies.json
 	  #will return all valid public proxies tested against the target url
 ```
 
@@ -81,7 +89,7 @@ Install the package
 Create  *Raven* instance and call the *Init* function to set it up
 ```go
  import (
-	"github.com/HatemTemimi/Raven/raven"
+	raven "github.com/HatemTemimi/Raven/raven/lib"
 )
 
   raven  := raven.Raven{}

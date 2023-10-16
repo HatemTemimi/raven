@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"log"
-	raven "github.com/HatemTemimi/Raven/raven/cli"
+
+	ravenCli "github.com/HatemTemimi/Raven/raven/cli"
 )
 
 func main() {
 
-	cli := raven.Cli{}
+	cli := ravenCli.Cli{}
 	cli.Raven.Init()
 
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
