@@ -2,38 +2,39 @@ package raven
 
 import (
 	"errors"
-	"net/http"
 	"path/filepath"
 
 	raven "github.com/HatemTemimi/Raven/raven/lib"
 )
 
 type Cli struct {
-	raven raven.Raven
+	Raven raven.Raven
 }
 
 func (c *Cli) Init() {
+	/*
 	client := http.Client{}
-	c.raven.Scanner.Client = &client
-	c.raven.Checker.Client = &client
+	c.Raven.Scanner.Client = &client
+	c.Raven.Checker.Client = &client
+	*/
 }
 
 func (c *Cli) FetchAllToStdOut() error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	c.raven.Writer.WriteToStdout(proxies)
+	c.Raven.Writer.WriteToStdout(proxies)
 	return nil
 }
 
 func (c *Cli) FetchValidToStdOut(target string) error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.raven.Checker.Check(proxies, []string{target})
-	c.raven.Writer.WriteToStdout(workingAgainst)
+	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
+	c.Raven.Writer.WriteToStdout(workingAgainst)
 	return nil
 }
 
@@ -55,11 +56,11 @@ func (c *Cli) FetchAllToFile(path string) error {
 }
 
 func (c *Cli) FetchAllToJsonFile(filePath string) error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	err = c.raven.Writer.WriteToJsonFile(proxies, filePath)
+	err = c.Raven.Writer.WriteToJsonFile(proxies, filePath)
 	if err != nil {
 		return err
 	}
@@ -68,11 +69,11 @@ func (c *Cli) FetchAllToJsonFile(filePath string) error {
 
 
 func (c *Cli) FetchAllToTxtFile(filePath string) error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	err = c.raven.Writer.WriteToTxtFile(proxies, filePath)
+	err = c.Raven.Writer.WriteToTxtFile(proxies, filePath)
 	if err != nil {
 		return err
 	}
@@ -80,12 +81,12 @@ func (c *Cli) FetchAllToTxtFile(filePath string) error {
 }
 
 func (c *Cli) FetchValidToJsonFile(target string, filePath string) error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.raven.Checker.Check(proxies, []string{target})
-	err = c.raven.Writer.WriteToJsonFile(workingAgainst, filePath)
+	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
+	err = c.Raven.Writer.WriteToJsonFile(workingAgainst, filePath)
 	if err != nil {
 		return err
 	}
@@ -94,12 +95,12 @@ func (c *Cli) FetchValidToJsonFile(target string, filePath string) error {
 
 
 func (c *Cli) FetchValidToTxtFile(target string, filePath string) error {
-	proxies, err := c.raven.Scanner.ScanDefaultSources()
+	proxies, err := c.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.raven.Checker.Check(proxies, []string{target})
-	err = c.raven.Writer.WriteToTxtFile(workingAgainst, filePath)
+	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
+	err = c.Raven.Writer.WriteToTxtFile(workingAgainst, filePath)
 	if err != nil {
 		return err
 	}
@@ -132,18 +133,18 @@ func (c *Cli) FetchValidFromFileToFile(url string, source string, target string)
 func (c *Cli) FetchValidFromFileToStdOut(url string, source string) error {
 	var sourceExt =  filepath.Ext(source)
 	if sourceExt == ".txt" {
-		proxies, err := c.raven.FetchValidFromTxtFile(url,source)
+		proxies, err := c.Raven.FetchValidFromTxtFile(url,source)
 		if err != nil {
 			return err
 		}
-		c.raven.Writer.WriteToStdout(proxies)
+		c.Raven.Writer.WriteToStdout(proxies)
 		
 	} else if sourceExt == ".json" {
-		proxies,err := c.raven.FetchValidFromJsonFile(url,source)
+		proxies,err := c.Raven.FetchValidFromJsonFile(url,source)
 		if err != nil {
 			return err
 		}
-		c.raven.Writer.WriteToStdout(proxies)
+		c.Raven.Writer.WriteToStdout(proxies)
 	}
 	return nil
 }
@@ -152,30 +153,30 @@ func (c *Cli) FetchValidFromFileToStdOut(url string, source string) error {
 func (c *Cli) FetchAllFromFileToStdOut(source string) error {
 	var sourceExt =  filepath.Ext(source)
 	if sourceExt == ".txt" {
-		proxies, err := c.raven.FetchAllFromTxtFile(source)
+		proxies, err := c.Raven.FetchAllFromTxtFile(source)
 		if err != nil {
 			return err
 		}
-		c.raven.Writer.WriteToStdout(proxies)
+		c.Raven.Writer.WriteToStdout(proxies)
 		
 	} else if sourceExt == ".json" {
-		proxies,err := c.raven.FetchAllFromJsonFile(source)
+		proxies,err := c.Raven.FetchAllFromJsonFile(source)
 		if err != nil {
 			return err
 		}
-		c.raven.Writer.WriteToStdout(proxies)
+		c.Raven.Writer.WriteToStdout(proxies)
 	}
 	return nil
 }
 
 
 func (c *Cli) FetchValidFromTxtToTxt(url string, source string, target string) error {
-	proxies, err := c.raven.Reader.ReadTxtfile(source)
+	proxies, err := c.Raven.Reader.ReadTxtfile(source)
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.raven.Checker.Check(proxies, []string{url})
-	err = c.raven.Writer.WriteToTxtFile(workingAgainst, target)
+	workingAgainst := c.Raven.Checker.Check(proxies, []string{url})
+	err = c.Raven.Writer.WriteToTxtFile(workingAgainst, target)
 	if err != nil {
 		return err
 	}
@@ -184,12 +185,12 @@ func (c *Cli) FetchValidFromTxtToTxt(url string, source string, target string) e
 
 
 func (c *Cli) FetchValidFromJsonToJson(url string, source string, target string) error {
-	proxies, err := c.raven.Reader.ReadJsonFile(source)
+	proxies, err := c.Raven.Reader.ReadJsonFile(source)
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.raven.Checker.Check(proxies, []string{url})
-	err = c.raven.Writer.WriteToJsonFile(workingAgainst, target)
+	workingAgainst := c.Raven.Checker.Check(proxies, []string{url})
+	err = c.Raven.Writer.WriteToJsonFile(workingAgainst, target)
 	if err != nil {
 		return err
 	}

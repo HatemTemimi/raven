@@ -9,7 +9,7 @@ import (
 func main() {
 
 	cli := raven.Cli{}
-	cli.Init()
+	cli.Raven.Init()
 
 	target := flag.String("t", "", "Provide a Target URL to test proxies against, defaults to google")
 	fetch := flag.String("f", "all", "Fetch types:\n 1/all: all proxies \n 2/valid: only valid proxies[you must provide a target with -t]")

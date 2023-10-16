@@ -92,21 +92,22 @@ func (r *Raven) FetchValidFromTxtFile(target string, filePath string) ([]string,
 }
 
 
-func (r *Raven) FetchValidFromFileToStdOut(url string, source string) ([]string, error) {
+func (r *Raven) FetchValidFromFileToStdOut(url string, source string) (error) {
 	var sourceExt =  filepath.Ext(source)
 	if sourceExt == ".txt" {
 		proxies, err := r.FetchValidFromTxtFile(url,source)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		return proxies, nil
+		r.Writer.WriteToStdout(proxies)
 		
 	} else if sourceExt == ".json" {
 		proxies,err := r.FetchValidFromJsonFile(url,source)
 		if err != nil {
-			return nil,err
+			return err
 		}
-		return proxies, nil
+
+		r.Writer.WriteToStdout(proxies)
 	}
-	return nil, nil
+	return  nil
 }

@@ -1,6 +1,7 @@
 # Raven: HTTP Proxy Lister & Tester
 ### In the Box:
 <ul>
+
 <li> Get over 5000 http public proxies from multiples sources </li>
 <li> Test the http proxies against custom targets </li>
 <li> Export the http proxies to JSON formatted files </li>
@@ -87,7 +88,7 @@ Create  *Raven* instance and call the *Init* function to set it up
   raven.Init() //!!Mandatory to intialize http client
 ```
 Now that the instance is setup and ready you can call various fetch functions:
-### FetchAll()
+### FetchAll() []string
 
  - returns a string array of all the proxies without testing any
  - returns an error in case it could not fetch the proxies
@@ -96,7 +97,7 @@ Now that the instance is setup and ready you can call various fetch functions:
 	proxies, err := raven.FetchAll()
 	log.Println(proxies)
 ```
-### FetchValid(target string)
+### FetchValid(target string) ([]string, error)
 the target is the url you want to test against, for example: *www.scrapeme.live*
 **use this format for the target url, no need to add the protocol to the url**
  - returns a string array of all the successfully tested proxies against given target
@@ -104,6 +105,80 @@ the target is the url you want to test against, for example: *www.scrapeme.live*
 
 ```go
 	proxies, err := raven.FetchValid("www.scrapeme.live")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+
+### FetchAllFromTxtFile(filePath string) ([]string, error) 
+
+ - returns a string array of all the proxies without testing any
+ - returns an error in case it could not fetch the proxies from the file
+```go
+	proxies, err := raven.FetchAllFromTxtFile("proxies.txt")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+### FetchAllFromJsonFile(filePath string) ([]string, error) 
+
+ - returns a string array of all the proxies without testing any
+ - returns an error in case it could not fetch the proxies from the file
+```go
+	proxies, err := raven.FetchAllFromJsonFile("proxies.json")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+### FetchAllFromFile(source string) ([]string,error) 
+this one is merely an abstraction over the two previous function, it is file type agnostic
+
+ - returns a string array of all the proxies without testing any
+ - returns an error in case it could not fetch the proxies from the file
+```go
+    //this one does not care about the file type
+	proxies, err := raven.FetchAllFromFile("proxies.json")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+### FetchValidFromJsonFile(target string, filePath string) ([]string, error) 
+
+the target is the url you want to test against, for example: *www.scrapeme.live*
+**use this format for the target url, no need to add the protocol to the url**
+ - returns a string array of all the successfully tested proxies against given target from the given file
+ - returns an error in case it could not fetch the proxies or test them
+```go
+	proxies, err := raven.FetchValidFromJsonFile("www.mytarget.com", "proxies.json")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+### FetchValidFromTxtFile(target string, filePath string) ([]string, error) 
+
+the target is the url you want to test against, for example: *www.scrapeme.live*
+**use this format for the target url, no need to add the protocol to the url**
+ - returns a string array of all the successfully tested proxies against given target from the given file
+ - returns an error in case it could not fetch the proxies or test them
+```go
+	proxies, err := raven.FetchValidFromTxtFile("www.mytarget.com", "proxies.txt")
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(proxies)
+```
+### FetchValidFromFileToStdOut(url string, source string) (error) 
+the target is the url you want to test against, for example: *www.scrapeme.live*
+**use this format for the target url, no need to add the protocol to the url**
+ - prints to Stdout all the successfully tested proxies against given target from the given file
+ - returns an error in case it could not fetch the proxies or test them
+```go
+	proxies, err := raven.FetchValidFromFile("www.mytarget.com","proxies.txt")
 	if err != nil {
 		log.Println(err)
 	}
