@@ -10,7 +10,7 @@
 </ul>
 
 ## Proxies in one command with docker
-You can run the Raven as a container and it will print out the result proxies for you, it also comes with flags support to filter out the results.
+You can run <strong>Raven</strong> as a container and it will print out the result proxies for you, it also comes with flags support to filter out the results.
 
 ### Setup and First Run
 Pull and run the docker image
