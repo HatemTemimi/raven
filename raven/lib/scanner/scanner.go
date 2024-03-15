@@ -1,4 +1,4 @@
-package raven
+package scanner
 
 import (
 	"bufio"

@@ -1,4 +1,4 @@
-package raven
+package reader
 
 import (
 	"bufio"
@@ -8,16 +8,15 @@ import (
 	"os"
 )
 
+type Reader struct{}
 
-type Reader struct {}
-
-func (r *Reader) ReadTxtfile(path string) ([]string, error){
+func (r *Reader) ReadTxtfile(path string) ([]string, error) {
 
 	var proxies []string
 
 	file, err := os.Open(path)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	fscanner := bufio.NewScanner(file)
@@ -28,8 +27,7 @@ func (r *Reader) ReadTxtfile(path string) ([]string, error){
 	return proxies, nil
 }
 
-
-func (r *Reader) ReadTxtfileToStdOut(path string) (error){
+func (r *Reader) ReadTxtfileToStdOut(path string) error {
 
 	file, err := os.Open(path)
 	if err != nil {
@@ -43,11 +41,11 @@ func (r *Reader) ReadTxtfileToStdOut(path string) (error){
 	return nil
 }
 
-func (r *Reader) ReadJsonFile(path string)([]string, error){
+func (r *Reader) ReadJsonFile(path string) ([]string, error) {
 
 	file, err := os.Open(path)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	defer file.Close()
 
@@ -65,7 +63,7 @@ func (r *Reader) ReadJsonFile(path string)([]string, error){
 
 	for _, proxy := range proxies {
 		proxies = append(proxies, proxy)
-	}	
+	}
 
 	return proxies, nil
 }
@@ -91,7 +89,7 @@ func (r *Reader) ReadJsonFileToStdOut(path string) error {
 
 	for _, proxy := range proxies {
 		log.Println(proxy)
-	}	
+	}
 
 	return nil
 }

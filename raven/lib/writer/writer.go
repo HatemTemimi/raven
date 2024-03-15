@@ -1,4 +1,4 @@
-package raven
+package writer
 
 import (
 	"encoding/json"
@@ -32,7 +32,7 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 	defer f.Close()
 
 	for _, value := range proxies {
-		fmt.Fprintln(f, value)  
+		fmt.Fprintln(f, value)
 	}
 
 	return nil
@@ -42,7 +42,7 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 func (w *Writer) WriteToStdout(proxies []string) {
 
 	for _, value := range proxies {
-		fmt.Println(value)  
+		fmt.Println(value)
 	}
 
 }

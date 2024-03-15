@@ -1,4 +1,4 @@
-package raven
+package lib
 
 import (
 	"encoding/json"
