@@ -36,10 +36,16 @@ func (cli *Cli) Init() {
 				//without target
 				if *output == "" {
 					//without output
-					cli.FetchAllToStdOut()
+					err := cli.FetchAllToStdOut()
+					if err != nil {
+						return
+					}
 				} else if *output != "" {
 					//with output
-					cli.FetchAllToFile(*output)
+					err := cli.FetchAllToFile(*output)
+					if err != nil {
+						return
+					}
 				}
 			}
 
@@ -49,19 +55,31 @@ func (cli *Cli) Init() {
 				//fetching valid without target, forwards to google.com
 				if *output == "" {
 					//without output, forwards to sdtdout
-					cli.FetchValidToStdOut("www.google.com")
+					err := cli.FetchValidToStdOut("www.google.com")
+					if err != nil {
+						return
+					}
 				} else if *output != "" {
 					//with output
-					cli.FetchValidToFile("www.google.com", *output)
+					err := cli.FetchValidToFile("www.google.com", *output)
+					if err != nil {
+						return
+					}
 				}
 			} else if *target != "" {
 				//with target
 				if *output == "" {
 					//without output
-					cli.FetchValidToStdOut(*target)
+					err := cli.FetchValidToStdOut(*target)
+					if err != nil {
+						return
+					}
 				} else if *output != "" {
 					//with output
-					cli.FetchValidToFile(*target, *output)
+					err := cli.FetchValidToFile(*target, *output)
+					if err != nil {
+						return
+					}
 				}
 			}
 		}
@@ -95,18 +113,30 @@ func (cli *Cli) Init() {
 				if *output == "" {
 					//without output, forwards to sdtdout
 					//neeeds FETCHVALIDfromfileTOSTDOUT
-					cli.FetchValidFromFileToStdOut("www.google.com", *input)
+					err := cli.FetchValidFromFileToStdOut("www.google.com", *input)
+					if err != nil {
+						return
+					}
 				} else if *output != "" {
-					cli.FetchValidFromFileToFile("www.google.com", *input, *output)
+					err := cli.FetchValidFromFileToFile("www.google.com", *input, *output)
+					if err != nil {
+						return
+					}
 				}
 			} else if *target != "" {
 				//with target
 				if *output == "" {
 					//without output
-					cli.FetchValidFromFileToStdOut(*target, *input)
+					err := cli.FetchValidFromFileToStdOut(*target, *input)
+					if err != nil {
+						return
+					}
 				} else if *output != "" {
 					//with output
-					cli.FetchValidFromFileToFile(*target, *input, *output)
+					err := cli.FetchValidFromFileToFile(*target, *input, *output)
+					if err != nil {
+						return
+					}
 				}
 			}
 		}
@@ -117,34 +147,34 @@ func (cli *Cli) Init() {
 	}
 }
 
-func (c *Cli) FetchAllToStdOut() error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
+func (cli *Cli) FetchAllToStdOut() error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	c.Raven.Writer.WriteToStdout(proxies)
+	cli.Raven.Writer.WriteToStdout(proxies)
 	return nil
 }
 
-func (c *Cli) FetchValidToStdOut(target string) error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
+func (cli *Cli) FetchValidToStdOut(target string) error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
-	c.Raven.Writer.WriteToStdout(workingAgainst)
+	workingAgainst := cli.Raven.Checker.Check(proxies, []string{target})
+	cli.Raven.Writer.WriteToStdout(workingAgainst)
 	return nil
 }
 
-func (c *Cli) FetchAllToFile(path string) error {
+func (cli *Cli) FetchAllToFile(path string) error {
 	var extension = filepath.Ext(path)
 	if extension == ".txt" {
-		err := c.FetchAllToTxtFile(path)
+		err := cli.FetchAllToTxtFile(path)
 		if err != nil {
 			return err
 		}
 	} else if extension == ".json" {
-		err := c.FetchAllToJsonFile(path)
+		err := cli.FetchAllToJsonFile(path)
 		if err != nil {
 			return err
 		}
@@ -153,67 +183,67 @@ func (c *Cli) FetchAllToFile(path string) error {
 	return nil
 }
 
-func (c *Cli) FetchAllToJsonFile(filePath string) error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
+func (cli *Cli) FetchAllToJsonFile(filePath string) error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	err = c.Raven.Writer.WriteToJsonFile(proxies, filePath)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Cli) FetchAllToTxtFile(filePath string) error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
-	if err != nil {
-		return err
-	}
-	err = c.Raven.Writer.WriteToTxtFile(proxies, filePath)
+	err = cli.Raven.Writer.WriteToJsonFile(proxies, filePath)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Cli) FetchValidToJsonFile(target string, filePath string) error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
+func (cli *Cli) FetchAllToTxtFile(filePath string) error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
-	err = c.Raven.Writer.WriteToJsonFile(workingAgainst, filePath)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Cli) FetchValidToTxtFile(target string, filePath string) error {
-	proxies, err := c.Raven.Scanner.ScanDefaultSources()
-	if err != nil {
-		return err
-	}
-	workingAgainst := c.Raven.Checker.Check(proxies, []string{target})
-	err = c.Raven.Writer.WriteToTxtFile(workingAgainst, filePath)
+	err = cli.Raven.Writer.WriteToTxtFile(proxies, filePath)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Cli) FetchValidFromFileToFile(url string, source string, target string) error {
+func (cli *Cli) FetchValidToJsonFile(target string, filePath string) error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
+	if err != nil {
+		return err
+	}
+	workingAgainst := cli.Raven.Checker.Check(proxies, []string{target})
+	err = cli.Raven.Writer.WriteToJsonFile(workingAgainst, filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Cli) FetchValidToTxtFile(target string, filePath string) error {
+	proxies, err := cli.Raven.Scanner.ScanDefaultSources()
+	if err != nil {
+		return err
+	}
+	workingAgainst := cli.Raven.Checker.Check(proxies, []string{target})
+	err = cli.Raven.Writer.WriteToTxtFile(workingAgainst, filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Cli) FetchValidFromFileToFile(url string, source string, target string) error {
 	var sourceExt = filepath.Ext(source)
 	var targetExt = filepath.Ext(target)
 	if sourceExt == targetExt {
 		if sourceExt == ".txt" {
-			err := c.FetchValidFromTxtToTxt(url, source, target)
+			err := cli.FetchValidFromTxtToTxt(url, source, target)
 			if err != nil {
 				return err
 			}
 		} else if sourceExt == ".json" {
-			err := c.FetchValidFromJsonToJson(url, source, target)
+			err := cli.FetchValidFromJsonToJson(url, source, target)
 			if err != nil {
 				return err
 			}
@@ -225,79 +255,79 @@ func (c *Cli) FetchValidFromFileToFile(url string, source string, target string)
 	return nil
 }
 
-func (c *Cli) FetchValidFromFileToStdOut(url string, source string) error {
+func (cli *Cli) FetchValidFromFileToStdOut(url string, source string) error {
 	var sourceExt = filepath.Ext(source)
 	if sourceExt == ".txt" {
-		proxies, err := c.Raven.FetchValidFromTxtFile(url, source)
+		proxies, err := cli.Raven.FetchValidFromTxtFile(url, source)
 		if err != nil {
 			return err
 		}
-		c.Raven.Writer.WriteToStdout(proxies)
+		cli.Raven.Writer.WriteToStdout(proxies)
 
 	} else if sourceExt == ".json" {
-		proxies, err := c.Raven.FetchValidFromJsonFile(url, source)
+		proxies, err := cli.Raven.FetchValidFromJsonFile(url, source)
 		if err != nil {
 			return err
 		}
-		c.Raven.Writer.WriteToStdout(proxies)
+		cli.Raven.Writer.WriteToStdout(proxies)
 	}
 	return nil
 }
 
-func (c *Cli) FetchAllFromFileToStdOut(source string) error {
+func (cli *Cli) FetchAllFromFileToStdOut(source string) error {
 	var sourceExt = filepath.Ext(source)
 	if sourceExt == ".txt" {
-		proxies, err := c.Raven.FetchAllFromTxtFile(source)
+		proxies, err := cli.Raven.FetchAllFromTxtFile(source)
 		if err != nil {
 			return err
 		}
-		c.Raven.Writer.WriteToStdout(proxies)
+		cli.Raven.Writer.WriteToStdout(proxies)
 
 	} else if sourceExt == ".json" {
-		proxies, err := c.Raven.FetchAllFromJsonFile(source)
+		proxies, err := cli.Raven.FetchAllFromJsonFile(source)
 		if err != nil {
 			return err
 		}
-		c.Raven.Writer.WriteToStdout(proxies)
+		cli.Raven.Writer.WriteToStdout(proxies)
 	}
 	return nil
 }
 
-func (c *Cli) FetchValidFromTxtToTxt(url string, source string, target string) error {
-	proxies, err := c.Raven.Reader.ReadTxtfile(source)
+func (cli *Cli) FetchValidFromTxtToTxt(url string, source string, target string) error {
+	proxies, err := cli.Raven.Reader.ReadTxtfile(source)
 	if err != nil {
 		return err
 	}
-	workingAgainst := c.Raven.Checker.Check(proxies, []string{url})
-	err = c.Raven.Writer.WriteToTxtFile(workingAgainst, target)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *Cli) FetchValidFromJsonToJson(url string, source string, target string) error {
-	proxies, err := c.Raven.Reader.ReadJsonFile(source)
-	if err != nil {
-		return err
-	}
-	workingAgainst := c.Raven.Checker.Check(proxies, []string{url})
-	err = c.Raven.Writer.WriteToJsonFile(workingAgainst, target)
+	workingAgainst := cli.Raven.Checker.Check(proxies, []string{url})
+	err = cli.Raven.Writer.WriteToTxtFile(workingAgainst, target)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Cli) FetchValidToFile(target string, path string) error {
+func (cli *Cli) FetchValidFromJsonToJson(url string, source string, target string) error {
+	proxies, err := cli.Raven.Reader.ReadJsonFile(source)
+	if err != nil {
+		return err
+	}
+	workingAgainst := cli.Raven.Checker.Check(proxies, []string{url})
+	err = cli.Raven.Writer.WriteToJsonFile(workingAgainst, target)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Cli) FetchValidToFile(target string, path string) error {
 	var extension = filepath.Ext(path)
 	if extension == ".txt" {
-		err := r.FetchValidToTxtFile(target, path)
+		err := cli.FetchValidToTxtFile(target, path)
 		if err != nil {
 			return err
 		}
 	} else if extension == ".json" {
-		err := r.FetchValidToJsonFile(target, path)
+		err := cli.FetchValidToJsonFile(target, path)
 		if err != nil {
 			return err
 		}

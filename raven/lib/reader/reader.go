@@ -47,7 +47,12 @@ func (r *Reader) ReadJsonFile(path string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	var Decoder *json.Decoder = json.NewDecoder(file)
 	if err != nil {
@@ -73,7 +78,12 @@ func (r *Reader) ReadJsonFileToStdOut(path string) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	var Decoder *json.Decoder = json.NewDecoder(file)
 	if err != nil {
