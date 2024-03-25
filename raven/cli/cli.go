@@ -33,10 +33,12 @@ func (cli *Cli) Init() {
 
 	flag.Parse()
 
+	//if the server is started the cli is not accessible
+	//api use
 	if *api == "start" {
 		cli.api.Init()
 	}
-
+	//cli use
 	//without input, fetching from sources
 	if *api == "" {
 		if *input == "" {

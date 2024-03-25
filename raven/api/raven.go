@@ -2,12 +2,12 @@ package api
 
 import (
 	"fmt"
-	raven "github.com/HatemTemimi/Raven/raven/lib"
+	"github.com/HatemTemimi/Raven/raven/lib"
 	"github.com/gin-gonic/gin"
 )
 
 type Api struct {
-	Raven raven.Raven
+	Raven lib.Raven
 }
 
 func (api *Api) Init() {
@@ -15,7 +15,7 @@ func (api *Api) Init() {
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": "raven api",
 		})
 	})
 	err := r.Run()
