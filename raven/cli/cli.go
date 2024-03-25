@@ -6,11 +6,17 @@ import (
 	"log"
 	"path/filepath"
 
+	ravenApi "github.com/HatemTemimi/Raven/raven/api"
 	raven "github.com/HatemTemimi/Raven/raven/lib"
 )
 
 type Cli struct {
 	Raven raven.Raven
+	api   ravenApi.Api
+}
+
+func (cli *Cli) HandleApiFlags() {
+
 }
 
 func (cli *Cli) Init() {
@@ -23,127 +29,135 @@ func (cli *Cli) Init() {
 	input := flag.String("i", "", "Path to the input file, json or txt")
 	help := flag.String("h", "", "Raven help")
 
+	api := flag.String("api", "", "Starts the server")
+
 	flag.Parse()
 
+	if *api == "start" {
+		cli.api.Init()
+	}
+
 	//without input, fetching from sources
-	if *input == "" {
-		if *fetch == "all" {
-			//fetching all without validation
-			if *target != "" {
-				//with target!!err
-				log.Println("the -t (target flag) is used with fetch set to valid --> -fetch valid")
-			} else if *target == "" {
-				//without target
-				if *output == "" {
-					//without output
-					err := cli.FetchAllToStdOut()
-					if err != nil {
-						return
+	if *api == "" {
+		if *input == "" {
+			if *fetch == "all" {
+				//fetching all without validation
+				if *target != "" {
+					//with target!!err
+					log.Println("the -t (target flag) is used with fetch set to valid --> -fetch valid")
+				} else if *target == "" {
+					//without target
+					if *output == "" {
+						//without output
+						err := cli.FetchAllToStdOut()
+						if err != nil {
+							return
+						}
+					} else if *output != "" {
+						//with output
+						err := cli.FetchAllToFile(*output)
+						if err != nil {
+							return
+						}
 					}
-				} else if *output != "" {
-					//with output
-					err := cli.FetchAllToFile(*output)
-					if err != nil {
-						return
+				}
+
+			} else if *fetch == "valid" {
+				if *target == "" {
+					log.Println("no custom target provided, testing against default target.")
+					//fetching valid without target, forwards to google.com
+					if *output == "" {
+						//without output, forwards to sdtdout
+						err := cli.FetchValidToStdOut("www.google.com")
+						if err != nil {
+							return
+						}
+					} else if *output != "" {
+						//with output
+						err := cli.FetchValidToFile("www.google.com", *output)
+						if err != nil {
+							return
+						}
+					}
+				} else if *target != "" {
+					//with target
+					if *output == "" {
+						//without output
+						err := cli.FetchValidToStdOut(*target)
+						if err != nil {
+							return
+						}
+					} else if *output != "" {
+						//with output
+						err := cli.FetchValidToFile(*target, *output)
+						if err != nil {
+							return
+						}
 					}
 				}
 			}
 
-		} else if *fetch == "valid" {
-			if *target == "" {
-				log.Println("no custom target provided, testing against default target.")
-				//fetching valid without target, forwards to google.com
-				if *output == "" {
-					//without output, forwards to sdtdout
-					err := cli.FetchValidToStdOut("www.google.com")
-					if err != nil {
-						return
-					}
-				} else if *output != "" {
-					//with output
-					err := cli.FetchValidToFile("www.google.com", *output)
-					if err != nil {
-						return
+		} else if *input != "" {
+			if *fetch == "all" {
+				//fetching all without validation
+				if *target != "" {
+					//with target!!err
+					log.Println("the -t (target flag) is used with fetch set to valid --> -fetch valid")
+				} else if *target == "" {
+					//without target
+					if *output == "" {
+						//without output
+						//FetchAllFromFile TO STDOUT
+						err := cli.FetchAllFromFileToStdOut(*input)
+						if err != nil {
+							log.Println(err)
+						}
+
+					} else if *output != "" {
+						//with output
+						log.Println("Fetching same proxies from file to file, try the -fetch valid flag with a custom target.")
 					}
 				}
-			} else if *target != "" {
-				//with target
-				if *output == "" {
-					//without output
-					err := cli.FetchValidToStdOut(*target)
-					if err != nil {
-						return
+
+			} else if *fetch == "valid" {
+				if *target == "" {
+					//fetching valid without target, forwards to google.com
+					log.Println("no custom target provided, testing against default target.")
+					if *output == "" {
+						//without output, forwards to sdtdout
+						//neeeds FETCHVALIDfromfileTOSTDOUT
+						err := cli.FetchValidFromFileToStdOut("www.google.com", *input)
+						if err != nil {
+							return
+						}
+					} else if *output != "" {
+						err := cli.FetchValidFromFileToFile("www.google.com", *input, *output)
+						if err != nil {
+							return
+						}
 					}
-				} else if *output != "" {
-					//with output
-					err := cli.FetchValidToFile(*target, *output)
-					if err != nil {
-						return
+				} else if *target != "" {
+					//with target
+					if *output == "" {
+						//without output
+						err := cli.FetchValidFromFileToStdOut(*target, *input)
+						if err != nil {
+							return
+						}
+					} else if *output != "" {
+						//with output
+						err := cli.FetchValidFromFileToFile(*target, *input, *output)
+						if err != nil {
+							return
+						}
 					}
 				}
 			}
+
+		} else if *fetch == "" || *help != "" {
+			//asking for help
+			flag.PrintDefaults()
 		}
-
-	} else if *input != "" {
-		if *fetch == "all" {
-			//fetching all without validation
-			if *target != "" {
-				//with target!!err
-				log.Println("the -t (target flag) is used with fetch set to valid --> -fetch valid")
-			} else if *target == "" {
-				//without target
-				if *output == "" {
-					//without output
-					//FetchAllFromFile TO STDOUT
-					err := cli.FetchAllFromFileToStdOut(*input)
-					if err != nil {
-						log.Println(err)
-					}
-
-				} else if *output != "" {
-					//with output
-					log.Println("Fetching same proxies from file to file, try the -fetch valid flag with a custom target.")
-				}
-			}
-
-		} else if *fetch == "valid" {
-			if *target == "" {
-				//fetching valid without target, forwards to google.com
-				log.Println("no custom target provided, testing against default target.")
-				if *output == "" {
-					//without output, forwards to sdtdout
-					//neeeds FETCHVALIDfromfileTOSTDOUT
-					err := cli.FetchValidFromFileToStdOut("www.google.com", *input)
-					if err != nil {
-						return
-					}
-				} else if *output != "" {
-					err := cli.FetchValidFromFileToFile("www.google.com", *input, *output)
-					if err != nil {
-						return
-					}
-				}
-			} else if *target != "" {
-				//with target
-				if *output == "" {
-					//without output
-					err := cli.FetchValidFromFileToStdOut(*target, *input)
-					if err != nil {
-						return
-					}
-				} else if *output != "" {
-					//with output
-					err := cli.FetchValidFromFileToFile(*target, *input, *output)
-					if err != nil {
-						return
-					}
-				}
-			}
-		}
-
-	} else if *fetch == "" || *help != "" {
-		//asking for help
-		flag.PrintDefaults()
 	}
 }
 

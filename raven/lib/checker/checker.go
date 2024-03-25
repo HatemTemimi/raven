@@ -41,7 +41,10 @@ func (c *Checker) CheckAgainstTarget(proxy string, target string, data *[]string
 			log.Println(proxy, " is Up & Fresh against: ", target)
 			*data = append(*data, proxy)
 			proxyJson, _ := json.Marshal(*data)
-			os.WriteFile("proxies.json", proxyJson, 0660)
+			err := os.WriteFile("proxies.json", proxyJson, 0660)
+			if err != nil {
+				return
+			}
 		}
 	}
 }

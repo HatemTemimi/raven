@@ -29,10 +29,18 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
 
 	for _, value := range proxies {
-		fmt.Fprintln(f, value)
+		_, err := fmt.Fprintln(f, value)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
