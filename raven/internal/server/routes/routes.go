@@ -31,6 +31,8 @@ func (router *Router) Init(e *echo.Echo) {
 }
 
 func (router *Router) InitRoutes() {
-	router.echo.GET("/fetch", router.handler.FetchAll)
-	router.echo.GET("/fetch/:target", router.handler.FetchValid)
+	router.echo.GET("api/fetch", router.handler.FetchAll)
+	router.echo.GET("api/fetch/:target", router.handler.FetchValid)
+	router.echo.GET("v1/fetch", router.handler.Index)
+	router.echo.GET("*", router.handler.Index)
 }
