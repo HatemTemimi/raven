@@ -1,13 +1,12 @@
 package lib
 
 import (
+	Checker "github.com/HatemTemimi/Raven/raven/pkg/lib/checker"
+	Reader "github.com/HatemTemimi/Raven/raven/pkg/lib/reader"
+	Scanner "github.com/HatemTemimi/Raven/raven/pkg/lib/scanner"
+	Writer "github.com/HatemTemimi/Raven/raven/pkg/lib/writer"
 	"net/http"
 	"path/filepath"
-
-	Checker "github.com/HatemTemimi/Raven/raven/lib/checker"
-	Reader "github.com/HatemTemimi/Raven/raven/lib/reader"
-	Scanner "github.com/HatemTemimi/Raven/raven/lib/scanner"
-	Writer "github.com/HatemTemimi/Raven/raven/lib/writer"
 )
 
 type Raven struct {

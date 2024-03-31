@@ -3,11 +3,10 @@ package cli
 import (
 	"errors"
 	"flag"
+	ravenApi "github.com/HatemTemimi/Raven/raven/internal/server"
+	raven "github.com/HatemTemimi/Raven/raven/pkg/lib"
 	"log"
 	"path/filepath"
-
-	ravenApi "github.com/HatemTemimi/Raven/raven/api"
-	raven "github.com/HatemTemimi/Raven/raven/lib"
 )
 
 type Cli struct {
@@ -29,12 +28,12 @@ func (cli *Cli) Init() {
 	input := flag.String("i", "", "Path to the input file, json or txt")
 	help := flag.String("h", "", "Raven help")
 
-	api := flag.String("api", "", "Starts the server")
+	api := flag.String("server", "", "Starts the server")
 
 	flag.Parse()
 
 	//if the server is started the cli is not accessible
-	//api use
+	//server use
 	if *api == "start" {
 		cli.api.Init()
 	}
