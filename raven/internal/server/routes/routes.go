@@ -27,6 +27,7 @@ func (router *Router) Init(e *echo.Echo) {
 		Raven: Raven,
 	}
 	router.echo = e
+	router.InitRoutes()
 }
 
 func (router *Router) InitRoutes() {
