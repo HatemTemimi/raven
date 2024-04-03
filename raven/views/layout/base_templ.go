@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-import partials "github.com/HatemTemimi/Raven/raven/views/partials"
+import "github.com/HatemTemimi/Raven/raven/views/partials"
 
 func Base(title string, username string, isError bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -52,7 +52,7 @@ func Base(title string, username string, isError bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 = []any{templ.KV("pt-30", !isError)}
+		var templ_7745c5c3_Var3 = []any{templ.KV("pt-40", !isError)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

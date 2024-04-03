@@ -1,6 +1,6 @@
 package layout
 
-import partials "github.com/HatemTemimi/Raven/raven/views/partials"
+import  "github.com/HatemTemimi/Raven/raven/views/partials"
 
 templ Base(title string, username string,  isError bool) {
 	<!DOCTYPE html>
@@ -27,7 +27,7 @@ templ Base(title string, username string,  isError bool) {
 					@partials.Navbar(username, title)
 				}
 			</header>
-			<main class={ templ.KV("pt-30", !isError) }>
+			<main class={ templ.KV("pt-40", !isError) }>
 				{ children... }
 			</main>
 		</body>
