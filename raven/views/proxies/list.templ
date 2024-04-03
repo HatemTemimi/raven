@@ -1,0 +1,25 @@
+package proxies
+
+templ ProxyTable(proxies []string){
+    <div class="overflow-x-auto">
+      <table class="table">
+        <!-- head -->
+        <thead>
+          <tr>
+            <th></th>
+            <th>Proxy</th>
+            <th>Port</th>
+          </tr>
+        </thead>
+        <tbody>
+            for _, proxy := range proxies {
+              <tr>
+                <th>X</th>
+                <td>{proxy}</td>
+                <td>X</td>
+              </tr>
+             }
+        </tbody>
+      </table>
+    </div>
+}

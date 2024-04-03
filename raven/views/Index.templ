@@ -1,12 +1,14 @@
 package views
 
-templ Index(proxies []string) {
+import "github.com/HatemTemimi/Raven/raven/views/layout"
+import "github.com/HatemTemimi/Raven/raven/views/proxies"
+
+templ Index(proxyList []string) {
+   @layout.Base("Raven proxy", "user", false) {
     <div>
-        <div> Raven Proxy Lister </div>
-        <div>
-        for _, proxy := range proxies {
-                <div> { proxy }</div>
-        }
-        </div>
+
+    @proxies.ProxyTable(proxyList)
+
     </div>
+   }
 }
