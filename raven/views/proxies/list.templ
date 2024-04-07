@@ -1,9 +1,13 @@
 package proxies
 
 templ ProxyTable(proxies []string){
+<div>
+    <form class="flex flex-row gap-8 w-100 justify-center">
+        <input type="text" placeholder="Enter target here" class="input input-bordered input-success w-full max-w-xs" />
+        <button class="btn btn-success" type="submit">test</button>
+    </form>
     <div class="overflow-x-auto">
       <table class="table">
-        <!-- head -->
         <thead>
           <tr>
             <th></th>
@@ -22,4 +26,5 @@ templ ProxyTable(proxies []string){
         </tbody>
       </table>
     </div>
+</div>
 }

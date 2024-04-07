@@ -23,7 +23,7 @@ func ProxyTable(proxies []string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"overflow-x-auto\"><table class=\"table\"><!-- head --><thead><tr><th></th><th>Proxy</th><th>Port</th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><form class=\"flex flex-row gap-8 w-100 justify-center\"><input type=\"text\" placeholder=\"Enter target here\" class=\"input input-bordered input-success w-full max-w-xs\"> <button class=\"btn btn-success\" type=\"submit\">test</button></form><div class=\"overflow-x-auto\"><table class=\"table\"><thead><tr><th></th><th>Proxy</th><th>Port</th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -35,7 +35,7 @@ func ProxyTable(proxies []string) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(proxy)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `proxies/list.templ`, Line: 18, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `proxies/list.templ`, Line: 22, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -46,7 +46,7 @@ func ProxyTable(proxies []string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody></table></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</tbody></table></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -2,12 +2,10 @@ package views
 
 import "github.com/HatemTemimi/Raven/raven/views/layout"
 import "github.com/HatemTemimi/Raven/raven/views/proxies"
-import "github.com/HatemTemimi/Raven/raven/views/partials"
 
 templ Index(proxyList []string) {
-   @layout.Base("Raven proxy", "user", false) {
-    <div>
-       @partials.ButtonBox()
+   @layout.Base("44.proxy", "user", false) {
+    <div class="flex flex-col">
        @proxies.ProxyTable(proxyList)
     </div>
    }
