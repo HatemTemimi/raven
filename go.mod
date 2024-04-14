@@ -1,13 +1,10 @@
-module github.com/HatemTemimi/Raven
+module github.com/HatemTemimi/raven
 
 go 1.21
 
 toolchain go1.21.0
 
-require (
-	github.com/a-h/templ v0.2.648
-	github.com/labstack/echo/v4 v4.11.4
-)
+require github.com/labstack/echo/v4 v4.11.4
 
 require (
 	github.com/labstack/gommon v0.4.2 // indirect

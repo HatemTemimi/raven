@@ -8,4 +8,4 @@ RUN go get
 
 RUN go build .
 
-ENTRYPOINT [ "/Raven" ] 
+ENTRYPOINT [ "/raven" ]
