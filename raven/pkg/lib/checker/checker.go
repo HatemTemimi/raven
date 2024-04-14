@@ -2,10 +2,12 @@ package lib
 
 import (
 	"encoding/json"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -14,9 +16,9 @@ type Checker struct {
 	Client *http.Client
 }
 
-func (c *Checker) CheckAgainstTarget(proxy string, target string, data *[]string, wg *sync.WaitGroup) {
+func (c *Checker) CheckAgainstTarget(proxy models.Proxy, target string, data *[]models.Proxy, wg *sync.WaitGroup) {
 	defer wg.Done()
-	proxyURL, err := url.Parse(proxy)
+	proxyURL, err := url.Parse("http://" + proxy.Ip + strconv.FormatInt(proxy.Port, 10))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,13 +51,13 @@ func (c *Checker) CheckAgainstTarget(proxy string, target string, data *[]string
 	}
 }
 
-func (c *Checker) Check(proxies []string, targets []string) []string {
-	var data []string
+func (c *Checker) Check(proxies []models.Proxy, targets []string) []models.Proxy {
+	var data []models.Proxy
 	var wg sync.WaitGroup
 	for _, t := range targets {
-		for _, e := range proxies {
+		for _, proxy := range proxies {
 			wg.Add(1)
-			go c.CheckAgainstTarget("http://"+e, t, &data, &wg)
+			go c.CheckAgainstTarget(proxy, t, &data, &wg)
 		}
 	}
 	wg.Wait()

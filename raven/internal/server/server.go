@@ -13,7 +13,6 @@ type Api struct {
 func (api *Api) Init() {
 	raven := api.raven
 	raven.Init()
-
 	e := echo.New()
 	router := routes.Router{}
 	router.Init(e)

@@ -2,6 +2,7 @@ package lib
 
 import (
 	Checker "github.com/HatemTemimi/Raven/raven/pkg/lib/checker"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
 	Reader "github.com/HatemTemimi/Raven/raven/pkg/lib/reader"
 	Scanner "github.com/HatemTemimi/Raven/raven/pkg/lib/scanner"
 	Writer "github.com/HatemTemimi/Raven/raven/pkg/lib/writer"
@@ -22,7 +23,7 @@ func (r *Raven) Init() {
 	r.Checker.Client = &client
 }
 
-func (r *Raven) FetchAll() ([]string, error) {
+func (r *Raven) FetchAll() ([]models.Proxy, error) {
 	proxies, err := r.Scanner.ScanDefaultSources()
 	if err != nil {
 		return nil, err
@@ -30,7 +31,7 @@ func (r *Raven) FetchAll() ([]string, error) {
 	return proxies, nil
 }
 
-func (r *Raven) FetchValid(target string) ([]string, error) {
+func (r *Raven) FetchValid(target string) ([]models.Proxy, error) {
 	proxies, err := r.Scanner.ScanDefaultSources()
 	if err != nil {
 		return nil, err
@@ -39,7 +40,7 @@ func (r *Raven) FetchValid(target string) ([]string, error) {
 	return workingAgainst, nil
 }
 
-func (r *Raven) FetchAllFromTxtFile(filePath string) ([]string, error) {
+func (r *Raven) FetchAllFromTxtFile(filePath string) ([]models.Proxy, error) {
 	proxies, err := r.Reader.ReadTxtfile(filePath)
 	if err != nil {
 		return nil, err
@@ -47,7 +48,7 @@ func (r *Raven) FetchAllFromTxtFile(filePath string) ([]string, error) {
 	return proxies, nil
 }
 
-func (r *Raven) FetchAllFromJsonFile(filePath string) ([]string, error) {
+func (r *Raven) FetchAllFromJsonFile(filePath string) ([]models.Proxy, error) {
 	proxies, err := r.Reader.ReadJsonFile(filePath)
 	if err != nil {
 		return nil, err
@@ -55,7 +56,7 @@ func (r *Raven) FetchAllFromJsonFile(filePath string) ([]string, error) {
 	return proxies, nil
 }
 
-func (r *Raven) FetchAllFromFile(source string) ([]string, error) {
+func (r *Raven) FetchAllFromFile(source string) ([]models.Proxy, error) {
 	var sourceExt = filepath.Ext(source)
 	if sourceExt == ".txt" {
 		proxies, err := r.FetchAllFromTxtFile(source)
@@ -74,7 +75,7 @@ func (r *Raven) FetchAllFromFile(source string) ([]string, error) {
 	return nil, nil
 }
 
-func (r *Raven) FetchValidFromJsonFile(target string, filePath string) ([]string, error) {
+func (r *Raven) FetchValidFromJsonFile(target string, filePath string) ([]models.Proxy, error) {
 	proxies, err := r.Reader.ReadJsonFile(filePath)
 	if err != nil {
 		return nil, err
@@ -83,7 +84,7 @@ func (r *Raven) FetchValidFromJsonFile(target string, filePath string) ([]string
 	return workingAgainst, nil
 }
 
-func (r *Raven) FetchValidFromTxtFile(target string, filePath string) ([]string, error) {
+func (r *Raven) FetchValidFromTxtFile(target string, filePath string) ([]models.Proxy, error) {
 	proxies, err := r.Reader.ReadTxtfile(filePath)
 	if err != nil {
 		return nil, err

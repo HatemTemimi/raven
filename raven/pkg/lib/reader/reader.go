@@ -4,15 +4,20 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/utils"
 	"log"
 	"os"
 )
 
+//this class reads proxies from txt or json file
+// and returns an array of proxies on success
+
 type Reader struct{}
 
-func (r *Reader) ReadTxtfile(path string) ([]string, error) {
+func (r *Reader) ReadTxtfile(path string) ([]models.Proxy, error) {
 
-	var proxies []string
+	var proxies []models.Proxy
 
 	file, err := os.Open(path)
 	if err != nil {
@@ -21,7 +26,10 @@ func (r *Reader) ReadTxtfile(path string) ([]string, error) {
 
 	fscanner := bufio.NewScanner(file)
 	for fscanner.Scan() {
-		proxies = append(proxies, fscanner.Text())
+		proxy, err := utils.ParseProxyFromAddress(fscanner.Text())
+		if err != nil {
+			proxies = append(proxies, *proxy)
+		}
 	}
 
 	return proxies, nil
@@ -41,7 +49,7 @@ func (r *Reader) ReadTxtfileToStdOut(path string) error {
 	return nil
 }
 
-func (r *Reader) ReadJsonFile(path string) ([]string, error) {
+func (r *Reader) ReadJsonFile(path string) ([]models.Proxy, error) {
 
 	file, err := os.Open(path)
 	if err != nil {
@@ -54,20 +62,24 @@ func (r *Reader) ReadJsonFile(path string) ([]string, error) {
 		}
 	}(file)
 
-	var Decoder *json.Decoder = json.NewDecoder(file)
+	var Decoder = json.NewDecoder(file)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var proxies []string
+	var decoded []string
+	var proxies []models.Proxy
 
-	err = Decoder.Decode(&proxies)
+	err = Decoder.Decode(&decoded)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	for _, proxy := range proxies {
-		proxies = append(proxies, proxy)
+	for _, proxy := range decoded {
+		parsed, err := utils.ParseProxyFromAddress(proxy)
+		if err != nil {
+			proxies = append(proxies, *parsed)
+		}
 	}
 
 	return proxies, nil

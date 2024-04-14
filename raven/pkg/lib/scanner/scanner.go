@@ -2,6 +2,9 @@ package scanner
 
 import (
 	"bufio"
+	"fmt"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/utils"
 	"net/http"
 )
 
@@ -16,9 +19,8 @@ const (
 	Clarketm    = "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt"
 )
 
-func (s *Scanner) ScanDefaultSources() ([]string, error) {
-
-	var proxies []string
+func (s *Scanner) ScanDefaultSources() ([]models.Proxy, error) {
+	var proxies []models.Proxy
 	s.sources = []string{TheSpeedX, ProxyScrape, Clarketm}
 
 	for _, source := range s.sources {
@@ -26,7 +28,14 @@ func (s *Scanner) ScanDefaultSources() ([]string, error) {
 		if err != nil {
 			return nil, err
 		}
-		proxies = append(proxies, chunk...)
+		for _, address := range chunk {
+			fmt.Println(address)
+			proxy, err := utils.ParseProxyFromAddress(address)
+			if err != nil {
+				proxies = append(proxies, *proxy)
+			}
+		}
+		//proxies = append(proxies, chunk...)
 	}
 
 	return proxies, nil

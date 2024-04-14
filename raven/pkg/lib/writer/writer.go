@@ -3,14 +3,18 @@ package writer
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
+	"github.com/HatemTemimi/Raven/raven/pkg/lib/utils"
 	"os"
 )
 
 type Writer struct{}
 
-func (w *Writer) WriteToJsonFile(proxies []string, path string) error {
+func (w *Writer) WriteToJsonFile(proxies []models.Proxy, path string) error {
 
-	proxyJson, err := json.Marshal(proxies)
+	formatted := utils.ProxiesToArray(proxies)
+
+	proxyJson, err := json.Marshal(formatted)
 	if err != nil {
 		return err
 	}
@@ -23,8 +27,9 @@ func (w *Writer) WriteToJsonFile(proxies []string, path string) error {
 	return nil
 }
 
-func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
+func (w *Writer) WriteToTxtFile(proxies []models.Proxy, path string) error {
 
+	formatted := utils.ProxiesToArray(proxies)
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -36,7 +41,7 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 		}
 	}(f)
 
-	for _, value := range proxies {
+	for _, value := range formatted {
 		_, err := fmt.Fprintln(f, value)
 		if err != nil {
 			return err
@@ -47,9 +52,10 @@ func (w *Writer) WriteToTxtFile(proxies []string, path string) error {
 
 }
 
-func (w *Writer) WriteToStdout(proxies []string) {
+func (w *Writer) WriteToStdout(proxies []models.Proxy) {
 
-	for _, value := range proxies {
+	formatted := utils.ProxiesToArray(proxies)
+	for _, value := range formatted {
 		fmt.Println(value)
 	}
 
