@@ -2,7 +2,6 @@ package scanner
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
 	"github.com/HatemTemimi/Raven/raven/pkg/lib/utils"
 	"net/http"
@@ -29,15 +28,10 @@ func (s *Scanner) ScanDefaultSources() ([]models.Proxy, error) {
 			return nil, err
 		}
 		for _, address := range chunk {
-			fmt.Println(address)
-			proxy, err := utils.ParseProxyFromAddress(address)
-			if err != nil {
-				proxies = append(proxies, *proxy)
-			}
+			proxy, _ := utils.ParseProxyFromAddress(address)
+			proxies = append(proxies, *proxy)
 		}
-		//proxies = append(proxies, chunk...)
 	}
-
 	return proxies, nil
 }
 

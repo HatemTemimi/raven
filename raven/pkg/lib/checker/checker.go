@@ -1,12 +1,10 @@
 package lib
 
 import (
-	"encoding/json"
 	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"sync"
 	"time"
@@ -18,14 +16,15 @@ type Checker struct {
 
 func (c *Checker) CheckAgainstTarget(proxy models.Proxy, target string, data *[]models.Proxy, wg *sync.WaitGroup) {
 	defer wg.Done()
-	proxyURL, err := url.Parse("http://" + proxy.Ip + strconv.FormatInt(proxy.Port, 10))
+	proxyURL, err := url.Parse("http://" + proxy.Ip + ":" + strconv.FormatInt(proxy.Port, 10))
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	transport := &http.Transport{
 		Proxy:                 http.ProxyURL(proxyURL),
-		ResponseHeaderTimeout: 30 * time.Second,
+		ResponseHeaderTimeout: 5 * time.Second,
 	}
 
 	c.Client.Transport = transport
@@ -37,16 +36,19 @@ func (c *Checker) CheckAgainstTarget(proxy models.Proxy, target string, data *[]
 	httpsResp, httpsErr := c.Client.Do(httpsPoke)
 
 	if httpsErr != nil {
-		log.Println(proxy, "is Down against: ", target)
+		proxy.Status = "down"
+		log.Println(proxyURL, "is Down against target: ", target)
 	} else {
 		if httpsResp != nil {
+			proxy.Status = "up"
 			log.Println(proxy, " is Up & Fresh against: ", target)
 			*data = append(*data, proxy)
-			proxyJson, _ := json.Marshal(*data)
+			/*proxyJson, _ := json.Marshal(*data)
 			err := os.WriteFile("proxies.json", proxyJson, 0660)
 			if err != nil {
 				return
 			}
+			*/
 		}
 	}
 }
@@ -62,5 +64,4 @@ func (c *Checker) Check(proxies []models.Proxy, targets []string) []models.Proxy
 	}
 	wg.Wait()
 	return data
-
 }

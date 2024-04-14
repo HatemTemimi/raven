@@ -53,10 +53,8 @@ func (w *Writer) WriteToTxtFile(proxies []models.Proxy, path string) error {
 }
 
 func (w *Writer) WriteToStdout(proxies []models.Proxy) {
-
 	formatted := utils.ProxiesToArray(proxies)
 	for _, value := range formatted {
 		fmt.Println(value)
 	}
-
 }

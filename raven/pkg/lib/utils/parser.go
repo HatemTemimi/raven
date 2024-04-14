@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"github.com/HatemTemimi/Raven/raven/pkg/lib/models"
 	"strconv"
 	"strings"
@@ -27,7 +26,7 @@ func ParseProxyFromAddress(url string) (*models.Proxy, error) {
 func ProxiesToArray(proxies []models.Proxy) []string {
 	var formatted []string
 	for _, proxy := range proxies {
-		formatted = append(formatted, fmt.Sprintf(proxy.Ip, ":", proxy.Port))
+		formatted = append(formatted, proxy.Ip+":"+strconv.FormatInt(proxy.Port, 10))
 	}
 	return formatted
 }
