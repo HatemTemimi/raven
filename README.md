@@ -1,5 +1,5 @@
 # Raven: HTTP Proxy Lister & Tester
-### In the Box:
+## In the Box:
 <ul>
 
 <li> Get over 5000 http public proxies from multiples sources </li>
@@ -9,10 +9,10 @@
 
 </ul>
 
-## Proxies in one command with docker
+# Proxies in one command with docker
 You can run <strong>Raven</strong> as a container and it will print out the result proxies for you, it also comes with flags support to filter out the results.
 
-### Setup and First Run
+## Setup and First Run
 Pull and run the docker image
 ```bash
     docker run --rm  hatemtemimi94/raven
@@ -77,19 +77,19 @@ Exporting to file is done via the flag -o
 	  #will return all valid public proxies tested against the target url
 ```
 
-## Library usage for developement
+# Raven Library usage 
 ## Add Raven to your project
 ### Requirements: Go, Git
 
 Install the package
 ```console
-    go get github.com/HatemTemimi/Raven
+    go get github.com/HatemTemimi/raven
  ```
 
 Create  *Raven* instance and call the *Init* function to set it up
 ```go
  import (
-	raven "github.com/HatemTemimi/Raven/raven/lib"
+	raven "github.com/HatemTemimi/raven/lib"
 )
 
   raven  := raven.Raven{}
@@ -236,6 +236,34 @@ the target is the url you want to test against, for example: *www.scrapeme.live*
 		log.Println(err)
 	}
 ```
+
+
+# Raven Server Usage
+
+You can also start raven as a backend server for your proxies
+
+### Requirements: Go
+
+from the root of the project
+
+```console
+cd cmd
+go run main.go --server start 
+ ```
+this will start an HTTP server on 8080 
+
+
+### Routes 
+``
+api/fetch
+`` 
+Fetches all the proxies from default targets 
+
+``
+api/fetch/:target 
+`` 
+Fetches all the proxies from default targets and tests them against the
+specified target, then only returns the valid ones
 
 #### Notes
 This is a project that i made in my freetime because i did not find a consistent package made to test proxies against a custom target, any PRs are welcome to improve it and I will be happy to improve it.
