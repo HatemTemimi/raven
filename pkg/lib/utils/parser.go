@@ -14,11 +14,12 @@ func ParseProxyFromAddress(url string) (*models.Proxy, error) {
 	}
 
 	port, _ := strconv.ParseInt(parts[1], 10, 64)
+	speed := "not tested"
 	proxy := models.Proxy{
 		Ip:     parts[0],
 		Port:   port,
-		Speed:  nil,
-		Status: "unknown",
+		Speed:  &speed,
+		Status: "not tested",
 	}
 	return &proxy, nil
 }

@@ -5,7 +5,7 @@ type Status string
 const (
 	UP      Status = "up"
 	DOWN    Status = "down"
-	UNKNOWN Status = "unknown"
+	UNKNOWN Status = "not tested"
 )
 
 type Proxy struct {
