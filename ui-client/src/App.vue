@@ -9,7 +9,7 @@ const loading = ref(true)
 const fetchProxies = async () => {
   await axios.get('http://localhost:8080/api/fetch')
       .then((response)=>{
-        proxies.value = response.data.slice(0, 33)
+        proxies.value = response.data.slice(0, 31)
         loading.value = false
 
       })
@@ -39,29 +39,37 @@ onMounted(async ()=>{
         Raven Proxy Lister & Tester
       </div>
       <div  class="bordered">
-        <div style="padding: 4px; height: auto" class="bordered">
-          <div style="text-align: center">
+        <div style=" height: auto" class="bordered">
+          <div class="search" style="text-align: center; margin-top: 1vh">
             <div style="display: flex; justify-content: center; ">
               <input v-model="target" style="width:25%" placeholder="type the target url you want to test against.."/>
               <button @click="testProxies">test</button>
             </div>
           </div>
+          <div class="content" style="padding: 10px" >
           <div style="margin-top: 2vh">
-            <div style="text-align: center" v-if="loading">loading..</div>
+            <div style="text-align: center" v-if="loading">loading..
+            </div>
+            <div style=" width:100%; display: flex; justify-content: space-between; flex-direction: row;" class="bordered">
+              <div style="margin-left: 5px">IP:Port</div>
+              <div>Status</div>
+              <div style="margin-right: 5px">Speed</div>
+            </div>
+            <div class="bordered" style="margin-top: 0.5vh; padding: 0.2rem">
           <div v-for="proxy of proxies">
-            <div style="display: flex; justify-content: space-evenly; flex-direction: row">
-              <div style="max-width: 30%">
-                  {{ proxy.Ip }}
+            <div style="display: flex; justify-content: space-between; flex-direction: row;">
+              <div>
+                  {{ proxy.Ip }}: {{ proxy.Port}}
               </div>
-
-                <div style="max-width: 30%">
-                {{ proxy.Port }}
-              </div>
-
-              <div style="max-width: 30%">
+              <div>
                 {{ proxy.Status }}
               </div>
+              <div>
+                {{ proxy.Speed  }}
+              </div>
             </div>
+          </div>
+          </div>
           </div>
           </div>
         </div>
